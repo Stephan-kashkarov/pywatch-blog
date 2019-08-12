@@ -33,9 +33,9 @@ def about():
 @app.route('/blog/<title>/edit', METHODS=['GET', "POST"])
 def edit_blog(title):
     blog = Blog.query.filter_by(title=title).first().__dict__
-    if request.method == "GET"
+    if request.method == "GET":
         return render_template('edit.html', content=blog, **context)
     # POST handling
-    
+
     
 
