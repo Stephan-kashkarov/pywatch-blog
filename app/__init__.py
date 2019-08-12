@@ -10,5 +10,6 @@ app.config.from_object(config['dev'])
 # Addons
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+cors = CORS(app)
 
 from app import models, routes

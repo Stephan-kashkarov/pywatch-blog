@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block static %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
+<script>
+    $(document).ready(() => {
+        var simplemde = new SimpleMDE({
+            element: $("#md-editor")[0],
+            placeholder: '{{content.}}'
+        })
+
+        $('.submit').on('click', () => {
+            $.ajax({
+                type: "POST",
+                url: window.location.href,
+                data: JSON.stringify({
+                    "title": $('#inputGroup-sizing-lg').value(),
+                    "text": simplemde.value(),
+                }),
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'jsonp',
+            })
+        })
+    })
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-lg">Title</span>
+        </div>
+    {% if not content %}
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+    </div>
+    <br>
+    <textarea name="md-editor" id="md-editor" cols="30" rows="10" placeholder="Enter your blog text">
+    {% else %}
+        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="{{content.title}}">
+    </div>
+    <br>
+    <textarea name="md-editor" id="md-editor" cols="30" rows="10" placeholder="Enter your blog text">
+    {% endif %}
+    </textarea>
+
+    <button type="button" class="btn btn-primary submit">Update</button>
+</div>
+{% endblock %}

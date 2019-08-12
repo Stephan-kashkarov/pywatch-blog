@@ -30,7 +30,7 @@ def about():
     return render_template('about.html', **context)
 
 
-@app.route('/blog/<title>/edit', METHODS=['GET', "POST"])
+@app.route('/blog/<title>/edit', methods=['GET', "POST"])
 def edit_blog(title):
     blog = Blog.query.filter_by(title=title).first()
     if request.method == "GET":
