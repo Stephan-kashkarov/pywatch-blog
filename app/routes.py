@@ -2,6 +2,7 @@ from app import app, db
 from app.models import Blog
 from flask import render_template, redirect, url_for, request
 from markdown2 import Markdown
+import pprint
 
 context = {
     'blogs': [],
@@ -38,10 +39,14 @@ def edit_blog(title):
         return render_template('edit.html', content=blog, **context)
     # POST handling
     data = request.get_json()
+    pprint.pprint(data)
     if not blog:
         db.session.add(Blog(**data))
     else:
-        blog.__dict__.update(data)
+        blog.title = data['title'] if data['title'] != '' else blog.title
+        blog.text = data['text'] if data['text'] != '' else blog.text
+        db.session.add(blog)
     db.session.commit()
+    return 'True'
     
 

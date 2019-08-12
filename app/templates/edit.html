@@ -8,7 +8,7 @@
     $(document).ready(() => {
         var simplemde = new SimpleMDE({
             element: $("#md-editor")[0],
-            placeholder: '{{content.}}'
+            placeholder: '{{content.text}}'
         })
 
         $('.submit').on('click', () => {
@@ -16,7 +16,7 @@
                 type: "POST",
                 url: window.location.href,
                 data: JSON.stringify({
-                    "title": $('#inputGroup-sizing-lg').value(),
+                    "title": $('.title').val(),
                     "text": simplemde.value(),
                 }),
                 contentType: 'application/json;charset=UTF-8',
@@ -32,15 +32,15 @@
     <br>
     <div class="input-group input-group-lg">
         <div class="input-group-prepend">
-            <span class="input-group-text" id="inputGroup-sizing-lg">Title</span>
+            <span class="input-group-text" id="input inputGroup-sizing-lg">Title</span>
         </div>
     {% if not content %}
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+        <input type="text" class="form-control title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
     </div>
     <br>
     <textarea name="md-editor" id="md-editor" cols="30" rows="10" placeholder="Enter your blog text">
     {% else %}
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="{{content.title}}">
+        <input type="text" class="form-control title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg" placeholder="{{content.title}}">
     </div>
     <br>
     <textarea name="md-editor" id="md-editor" cols="30" rows="10" placeholder="Enter your blog text">
