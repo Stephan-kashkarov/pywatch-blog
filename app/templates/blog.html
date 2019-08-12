@@ -4,7 +4,7 @@
 <script src="https://cdn.jsdelivr.net/npm/marked@0.7.0/lib/marked.min.js"></script>
 <script>
     const marked = require('marked')
-    $('.content').html(marked('{{content.text}}'))
+    $('.content').html(marked(`{{content.text}}`))
 </script>
 {% endblock %}
 
