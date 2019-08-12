@@ -6,7 +6,7 @@ from config import config
 
 app = Flask(__name__)
 # Config
-app.config.from_object(config['prod'])
+app.config.from_object(config['dev'])
 # Addons
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
