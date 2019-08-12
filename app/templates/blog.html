@@ -7,7 +7,7 @@
         gfm: true,
     })
     $(()=>{
-        $('.content').html(marked(`{{content.text}}`))
+        $('.content').html(marked($('.hidden').text()))
     })
 </script>
 {% endblock %}
@@ -17,6 +17,9 @@
     <h1>{{content.title}}</h1>
     <hr>
     <div class="content">
+    </div>
+    <div class="hidden" style="display: none">
+        {{content.text}}
     </div>
 </div>
 {% endblock %}

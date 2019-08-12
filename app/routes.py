@@ -8,9 +8,10 @@ context = {
 
 @app.before_request
 def refresh_context():
-    context.update({
-        'blogs': [x.title for x in Blog.query.all()],
-    })
+    if any(Blog.query.all()):
+        context.update({
+            'blogs': [x.title for x in Blog.query.all()],
+        })
 
 @app.route('/')
 def index():
