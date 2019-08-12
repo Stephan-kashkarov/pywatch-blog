@@ -32,10 +32,16 @@ def about():
 
 @app.route('/blog/<title>/edit', METHODS=['GET', "POST"])
 def edit_blog(title):
-    blog = Blog.query.filter_by(title=title).first().__dict__
+    blog = Blog.query.filter_by(title=title).first()
     if request.method == "GET":
+        blog = blog.__dict__ if blog else None
         return render_template('edit.html', content=blog, **context)
     # POST handling
-
+    data = request.get_json()
+    if not blog:
+        db.session.add(Blog(**data))
+    else:
+        blog.__dict__.update(data)
+    db.session.commit()
     
 
