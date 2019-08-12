@@ -1,9 +1,19 @@
 {% extends 'base.html' %}
 
+{% block static %}
+<script src="https://cdn.jsdelivr.net/npm/marked@0.7.0/lib/marked.min.js"></script>
+<script>
+    const marked = require('marked')
+    $('.content').html(marked('{{content.text}}'))
+</script>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <h1>{{content.title}}</h1>
     <hr>
-    {{content.text}}
+    <div class="content">
+
+    </div>
 </div>
 {% endblock %}

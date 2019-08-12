@@ -1,17 +1,13 @@
 from app import app, db
 from app.models import Blog
 from flask import render_template, redirect, url_for, request
-from markdown2 import Markdown
-import pprint
 
 context = {
     'blogs': [],
 }
-md = Markdown()
 
 @app.before_request
 def refresh_context():
-    print("Updating!!")
     context.update({
         'blogs': [x.title for x in Blog.query.all()],
     })
@@ -22,8 +18,7 @@ def index():
 
 @app.route('/blog/<title>')
 def blog(title):
-    blog = Blog.query.filter_by(title=title).first_or_404().__dict__
-    blog['text'] = md.convert(blog['text'])
+    blog = Blog.query.filter_by(title=title).first_or_404()
     return render_template('blog.html', content=blog, **context)
 
 @app.route('/about')
@@ -39,7 +34,6 @@ def edit_blog(title):
         return render_template('edit.html', content=blog, **context)
     # POST handling
     data = request.get_json()
-    pprint.pprint(data)
     if not blog:
         db.session.add(Blog(**data))
     else:
@@ -47,6 +41,6 @@ def edit_blog(title):
         blog.text = data['text'] if data['text'] != '' else blog.text
         db.session.add(blog)
     db.session.commit()
-    return 'True'
+    return 'true'
     
 
