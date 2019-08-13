@@ -6,15 +6,25 @@
     marked.setOptions({
         gfm: true,
     })
-    $(()=>{
+    $(() => {
         $('.content').html(marked($('.hidden').text()))
+        $('.edit-button').on('click', () => {
+            window.location.href += "/edit"
+        })
     })
 </script>
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>{{content.title}}</h1>
+    <div class="row">
+        <div class="col">
+            <h1>{{content.title}}</h1>
+        </div>
+        <div class="col" style="text-align: right">
+            <button class="btn btn-primary edit-button">Edit</button>
+        </div>
+    </div>
     <hr>
     <div class="content">
     </div>

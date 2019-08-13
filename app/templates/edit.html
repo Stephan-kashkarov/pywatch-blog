@@ -8,7 +8,7 @@
     $(document).ready(() => {
         var simplemde = new SimpleMDE({
             element: $("#md-editor")[0],
-            placeholder: '{{content.text}}'
+            placeholder: $('.hidden').text()
         })
 
         $('.submit').on('click', () => {
@@ -48,5 +48,8 @@
     </textarea>
 
     <button type="button" class="btn btn-primary submit">Update</button>
+</div>
+<div class="hidden" style="display: none">
+    {{content.text}}
 </div>
 {% endblock %}
