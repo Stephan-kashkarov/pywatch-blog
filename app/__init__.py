@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 
@@ -11,5 +12,6 @@ app.config.from_object(config['dev'])
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 cors = CORS(app)
+login = LoginManager(app)
 
 from app import models, routes
