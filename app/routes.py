@@ -46,4 +46,7 @@ def edit_blog(title):
     return 'true'
     
 
-@app.route('/auth')
+@app.route('/auth', methods=["POST"])
+def login():
+    data = request.get_json()
+    return "false"
