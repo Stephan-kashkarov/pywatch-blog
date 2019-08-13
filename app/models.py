@@ -24,8 +24,7 @@ class Admin(db.Model, UserMixin):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), nullable=True)
     password_hash = db.Column(db.String(128))
-    logins = db.Column(db.Integer, default=0)
-    classes = db.relationship("Access", backref="user", lazy="dynamic")
+    logins = db.Column(db.Integer, server_default=0)
 
     def __repr__(self):
         return '<User {}>'.format(self.username)

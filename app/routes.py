@@ -1,6 +1,7 @@
 from app import app, db
 from app.models import Blog
 from flask import render_template, redirect, url_for, request
+from flask_login import login_required
 
 context = {
     'blogs': [],
@@ -26,7 +27,7 @@ def blog(title):
 def about():
     return render_template('about.html', **context)
 
-
+@login_required
 @app.route('/blog/<title>/edit', methods=['GET', "POST"])
 def edit_blog(title):
     blog = Blog.query.filter_by(title=title).first()
@@ -45,3 +46,4 @@ def edit_blog(title):
     return 'true'
     
 
+@app.route('/auth')
