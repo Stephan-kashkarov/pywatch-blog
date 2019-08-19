@@ -8,9 +8,8 @@
     $(document).ready(() => {
         var simplemde = new SimpleMDE({
             element: $("#md-editor")[0],
-            placeholder: $('.hidden').text()
         })
-
+        simplemde.value($('.hidden').text())
         $('.submit').on('click', () => {
             $.ajax({
                 type: "POST",
