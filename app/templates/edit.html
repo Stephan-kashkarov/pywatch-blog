@@ -8,7 +8,7 @@
     $(document).ready(() => {
         var simplemde = new SimpleMDE({
             element: $("#md-editor")[0],
-            placeholder: $('.hidden').text()
+            initialValue: $('.hidden').text()
         })
 
         $('.submit').on('click', () => {
@@ -22,6 +22,7 @@
                 contentType: 'application/json;charset=UTF-8',
                 dataType: 'jsonp',
             })
+            window.location.href = window.location.href.slice(0, -5)
         })
     })
 </script>
