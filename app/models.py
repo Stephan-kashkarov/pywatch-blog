@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 @login.user_loader
 def load_user(id):
     """User loader for flask login."""
-    return User.query.get(int(id))
+    return Admin.query.get(int(id))
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,3 +35,12 @@ class Admin(db.Model, UserMixin):
     def check_password(self, password):
         """Checks a password against the hash."""
         return check_password_hash(self.password_hash, password)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), index=True, default="anon")
+    text = db.Column(db.String(1000))
+    timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    blog = db.relationship("Comment_Blog", backref="blog.id", lazy="dynamic")
+    parent = db.relationship("Comment_Comment", backref="comment.id", lazy="dynamic")

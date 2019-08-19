@@ -11,7 +11,7 @@ context = {
 def refresh_context():
     if any(Blog.query.all()):
         context.update({
-            'blogs': [x.title for x in Blog.query.all()],
+            'blogs': sorted([x.title for x in Blog.query.all()]),
         })
 
 @app.route('/')
