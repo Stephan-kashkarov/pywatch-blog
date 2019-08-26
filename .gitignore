@@ -104,8 +104,9 @@ venv.bak/
 .mypy_cache/
 
 # Project stuff (Stephans code henceforth)
-.vscode/*
+.vscode/
 .DS_store
-blog-env/*
+blog-env/
 dev.db
 markdown/
+migrations/
