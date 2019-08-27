@@ -14,9 +14,9 @@ class Blog(db.Model):
     title = db.Column(db.String(50))
     text = db.Column(db.String(10000))
     timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
-
+    
     def __repr__(self):
-        return f"<Blog | title:{self.title}, time:{self.timestamp}>"
+        return f"<Blog | title: {self.title}>"
 
 
 class Admin(db.Model, UserMixin):
@@ -38,9 +38,14 @@ class Admin(db.Model, UserMixin):
 
 
 class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, )
     username = db.Column(db.String(64), index=True, default="anon")
     text = db.Column(db.String(1000))
     timestamp = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    blog = db.relationship("Comment_Blog", backref="blog.id", lazy="dynamic")
-    parent = db.relationship("Comment_Comment", backref="comment.id", lazy="dynamic")
+    blog = db.Column(db.Integer, db.ForeignKey('blog.id'))
+    parent = db.Column(db.Integer, db.ForeignKey('comment.id'), nullable=True)
+    rel = db.relationship("Comment", backref="comment", lazy="dynamic")
+    rel = db.relationship("Blog", backref="comment")
+
+    def __repr__(self):
+        return f"<Comment | User: {self.username}>"
