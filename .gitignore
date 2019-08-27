@@ -109,4 +109,4 @@ venv.bak/
 blog-env/
 dev.db
 markdown/
-migrations/
+migrations/*
