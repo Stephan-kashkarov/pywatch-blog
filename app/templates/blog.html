@@ -28,6 +28,25 @@
     <hr>
     <div class="content">
     </div>
+    <div class="comments">
+        <textarea name="comment" id="comment" rows="10" placeholder="Comment here!">
+
+        </textarea>
+        {% for comment in comments recursive %}
+        <div class="comment">
+            <h3>{{comment.username}}</h3>
+            <p>{{comment.text}}</p>
+            <textarea name="comment" id="comment_{{comment.id}}" rows="4" placeholder="Comment here!">
+            
+            </textarea>
+            {% if len(comment.sub_comments) %}
+            <div class="children">
+                {{ loop(comment.sub_comments) }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
     <div class="hidden" style="display: none">
         {{content.text}}
     </div>

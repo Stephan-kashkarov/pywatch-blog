@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import Blog
+from app.models import Blog, Comment, Admin
 from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 
@@ -21,7 +21,9 @@ def index():
 @app.route('/blog/<title>')
 def blog(title):
     blog = Blog.query.filter_by(title=title).first_or_404()
-    return render_template('blog.html', content=blog, **context)
+    comments = Comment.query.filter_by(blog=blog.id).all()
+    print(comments)
+    return render_template('blog.html', content=blog, comments=comments, **context)
 
 @app.route('/about')
 def about():
