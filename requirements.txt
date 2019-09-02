@@ -28,3 +28,5 @@ Werkzeug==0.15.5
 wrapt==1.11.2
 gunicorn
 psycopg2
+flask-markdown
+flask-markdown2
