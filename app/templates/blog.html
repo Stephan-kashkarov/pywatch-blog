@@ -1,18 +1,38 @@
 {% extends 'base.html' %}
 
 {% block static %}
-<script src="https://cdn.jsdelivr.net/npm/marked@0.7.0/lib/marked.min.js"></script>
 <script>
-    marked.setOptions({
-        gfm: true,
-    })
     $(() => {
-        $('.content').html(marked($('.hidden').text()))
-        $('.edit-button').on('click', () => {
-            window.location.href += "/edit"
+        $('.comment').on('click', function () {
+            $.ajax({
+                type: "POST",
+                url: window.location.href,
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify({
+                    "username": $(".username").value(),
+                    "text": $(this).parent().children('textarea').value()
+                })
+            })
         })
     })
 </script>
+
+<style>
+
+    textarea {
+        width: 100%;
+    }
+
+    .comment {
+        padding: 10px;
+        border: 2px solid black;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -27,28 +47,28 @@
     </div>
     <hr>
     <div class="content">
+        {{content.text|markdown}}
     </div>
+    <hr>
     <div class="comments">
-        <textarea name="comment" id="comment" rows="10" placeholder="Comment here!">
-
-        </textarea>
+        <div class="input-group mb-3">
+            <textarea name="comment" id="comment" rows="8" placeholder="Comment here!"></textarea>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon2" class=comment>Comment</button>
+            </div>
+        </div>
         {% for comment in comments recursive %}
         <div class="comment">
             <h3>{{comment.username}}</h3>
-            <p>{{comment.text}}</p>
-            <textarea name="comment" id="comment_{{comment.id}}" rows="4" placeholder="Comment here!">
-            
-            </textarea>
-            {% if len(comment.sub_comments) %}
+            <p>{{comment.text|markdown}}</p>
+            <textarea name="comment" id="comment_{{comment.id}}" rows="4" placeholder="Comment here!"></textarea>
+            {% if comment.sub_comments != [] %}
             <div class="children">
                 {{ loop(comment.sub_comments) }}
             </div>
             {% endif %}
         </div>
         {% endfor %}
-    </div>
-    <div class="hidden" style="display: none">
-        {{content.text}}
     </div>
 </div>
 {% endblock %}

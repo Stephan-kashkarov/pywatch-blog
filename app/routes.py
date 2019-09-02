@@ -3,9 +3,31 @@ from app.models import Blog, Comment, Admin
 from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 
+from pprint import pprint
+
 context = {
     'blogs': [],
 }
+
+def objToDict(obj):
+    return {
+        'id': obj.id,
+        'username': obj.username,
+        'text': obj.text,
+        'children': [],
+    }
+
+def subComments(clist):
+    for c in map(objToDict, clist):
+        c['children'].extend(
+            subComments(
+                Comment.query.filter_by(
+                    parent=c['id']
+                ).all()
+            )
+        )
+        yield c
+
 
 @app.before_request
 def refresh_context():
@@ -18,19 +40,32 @@ def refresh_context():
 def index():
     return render_template("index.html", **context)
 
-@app.route('/blog/<title>')
+@app.route('/blog/<title>', methods=["GET", "POST"])
 def blog(title):
-    blog = Blog.query.filter_by(title=title).first_or_404()
-    comments = Comment.query.filter_by(blog=blog.id).all()
-    print(comments)
-    return render_template('blog.html', content=blog, comments=comments, **context)
+    if request.method == "GET":
+        blog = Blog.query.filter_by(title=title).first_or_404()
+        comments = list(subComments(Comment.query.filter_by(blog=blog.id).all()))
+        print(blog.id)
+        print(Comment.query.filter_by(blog=blog.id).all())
+        pprint(comments)
+        return render_template('blog.html', content=blog, comments=comments, **context)
+    else:
+        try:
+            data = request.get_json()
+            c = Comment(**data)
+            db.session.add(c)
+            db.session.commit()
+        except:
+            return "False"
+        return "True"
+        
 
 @app.route('/about')
 def about():
     return render_template('about.html', **context)
 
 @login_required
-@app.route('/blog/<title>/edit', methods=['GET', "POST"])
+@app.route('/blog/<title>/edit', methods=["GET", "POST"])
 def edit_blog(title):
     blog = Blog.query.filter_by(title=title).first()
     if request.method == "GET":
