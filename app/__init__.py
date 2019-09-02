@@ -8,7 +8,7 @@ from flaskext.markdown import Markdown
 
 app = Flask(__name__)
 # Config
-app.config.from_object(config['dev'])
+app.config.from_object(config['prod'])
 # Addons
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
